@@ -15,15 +15,10 @@ void print_char(va_list args);
 void print_str(va_list args);
 void print_perc(va_list args);
 
-/**
- * struct hs - Structure to hold specifier and corresponding handler function
- * @sp: The specifier character
- * @h: Pointer to the handler function
- */
-typedef struct hs
+typedef struct
 {
-	char sp;
-	void (*h)(va_list);
+	char sp; /* The specifier character */
+	void (*h)(va_list); /* Pointer to the handler function */
 } hs;
 
 extern hs sph[];
