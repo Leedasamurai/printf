@@ -1,54 +1,69 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdarg.h>
-#include <stddef.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
 /**
- * print_char - prints single characters
- *
+ * print_char - Prints a single character.
  * @args: The va_list containing the variable argument list.
  */
 void print_char(va_list args)
 {
-
 	int c = va_arg(args, int);
 
 	_putchar(c);
-
 }
 
 /**
- * print_str - print a string of characters
- *
+ * print_str - Prints a string of characters.
  * @args: The va_list containing the variable argument list.
  */
 void print_str(va_list args)
 {
-
 	char *str = va_arg(args, char *);
+
+	if (str == NULL)
+	{
+		_putchar('(');
+		_putchar('n');
+		_putchar('u');
+		_putchar('l');
+		_putchar('l');
+		_putchar(')');
+
+		return;
+	}
 
 	while (*str != '\0')
 	{
-
 		_putchar(*str);
 		str++;
-
 	}
 }
 
 /**
- * print_perc - print % sign
- *
+ * print_perc - Prints the '%' character.
  * @args: The va_list containing the variable argument list.
  */
-
 void print_perc(va_list args)
 {
 	(void)args;
-	_putchar ('%');
+	_putchar('%');
 }
 
-
+/**
+ * print_unknown - Prints the 'Unknown' placeholder.
+ * @args: The va_list containing the variable argument list.
+ */
+void print_unknown(va_list args)
+{
+	(void)args;
+	_putchar('[');
+	_putchar('%');
+	_putchar('r');
+	_putchar(']');
+}
 
 /**
  * _printf - Custom printf function that handles specified format specifiers.
@@ -59,16 +74,9 @@ void print_perc(va_list args)
  */
 int _printf(const char *format, ...)
 {
-	hs sph[] = {
-		{'c', print_char},
-		{'s', print_str},
-		{'%', print_perc}
-};
-
+	va_list args;
 	int count = 0;
 	int i;
-	size_t j;
-	va_list args;
 
 	va_start(args, format);
 
@@ -79,17 +87,42 @@ int _printf(const char *format, ...)
 			_putchar(format[i]);
 			count++;
 		}
+
 		else
 		{
 			i++;
-			for (j = 0; j < sizeof(sph) / sizeof(sph[0]); j++)
+			if (format[i] == ' ')
 			{
-				if (sph[j].sp == format[i])
-				{
-					(*sph[j].h)(args);
-					count++;
-					break;
-				}
+				va_end(args);
+				return (-1);
+			}
+
+			if (format[i] == 'c')
+			{
+				int c = va_arg(args, int);
+
+				_putchar(c);
+				count++;
+			}
+
+			else if (format[i] == 's')
+			{
+				char *str = va_arg(args, char *);
+				int len = (str == NULL) ? fputs("(null)", stdout) : fputs(str, stdout);
+
+				count += (len == -1) ? 6 : len;
+			}
+
+			else if (format[i] == '%')
+			{
+				_putchar('%');
+				count++;
+			}
+
+			else if (format[i] == 'r')
+			{
+				print_unknown(args);
+				count += 4;
 			}
 		}
 	}

@@ -12,6 +12,8 @@ int _printf(const char *format, ...);
 void print_char(va_list args);
 void print_str(va_list args);
 void print_perc(va_list args);
+void print_unknown(va_list args);
+int fputs (const char *__restrict __s, FILE *__restrict __stream);
 
 /**
  * struct hs - A structure for handling format spec and corresponding func.
@@ -24,6 +26,6 @@ typedef struct hs
 	void (*h)(va_list);
 } hs;
 
-extern hs sph[];
+hs *get_specifier_handlers(void);
 
 #endif /* MAIN_H */
