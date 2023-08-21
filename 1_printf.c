@@ -31,8 +31,8 @@ int _printf(const char *format, ...)
 		{
 			_putchar(format[a], sumup);
 			sumup = sumup + 1;
+			a++;
 		}
-		a++;
 	}
 	return (sumup);
 }
