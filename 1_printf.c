@@ -25,7 +25,7 @@ int _printf(const char *format, ...)
 		{
 			stip = format[a + 1];
 			sumup = sumup + (*pick(stip))(args);
-			a++;
+			a += 2;
 		}
 		else
 		{
